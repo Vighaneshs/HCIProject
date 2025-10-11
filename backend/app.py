@@ -2,7 +2,7 @@ import os
 import logging
 from fastapi import FastAPI, File, UploadFile, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from dotenv import load_dotenv
 from llm_client import call_provider
 
@@ -31,6 +31,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def root():
+    """Redirect root to /docs for easier dev testing."""
+    return RedirectResponse(url="/docs")
 
 @app.get("/health")
 def health():
