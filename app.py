@@ -62,7 +62,7 @@ class ScreenshotApp:
         self.shortcut_entry.insert(0, DEFAULT_SHORTCUT)
         self.shortcut_entry.pack()
 
-        self.set_shortcut_button = tk.Button(master, text="Set Shortcut", command=self.setPshortcut)
+        self.set_shortcut_button = tk.Button(master, text="Set Shortcut", command=self.set_shortcut)
         self.set_shortcut_button.pack(pady=5)
         keyboard.add_hotkey(DEFAULT_SHORTCUT, self.on_hotkey_triggered)
 
