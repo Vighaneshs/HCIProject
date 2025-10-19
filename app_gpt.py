@@ -57,7 +57,7 @@ def send_to_chatgpt(image_path, user_prompt):
                         {"type": "text", "text": user_prompt},
                         {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_b64}"}}
                     ]
-                }
+                }P
             ]
         }
 
