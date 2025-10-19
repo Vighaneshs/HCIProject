@@ -3,7 +3,7 @@ from tkinter import scrolledtext, messagebox
 import threading
 import keyboard
 import pygetwindow as gw
-import pyautoguiP
+# import pyautoguiP
 import tempfile
 import base64
 import requests
