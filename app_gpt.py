@@ -1,10 +1,9 @@
-
 import tkinter as tk
 from tkinter import scrolledtext, messagebox
 import threading
 import keyboard
 import pygetwindow as gw
-import pyautogui
+import pyautoguiP
 import tempfile
 import base64
 import requests
@@ -18,6 +17,7 @@ MODEL = "mistralai/mistral-small-3.2-24b-instruct:free"
 DEFAULT_PROMPT = "I want to open a new file in vscode , At each step I will provide a screen shot of the app and you sould tell me what to do at each stage step by step what to do "
 DEFAULT_SHORTCUT = "shift+p"
 # ------------------------------------------------------ #
+
 
 def capture_active_window_screenshot():
     """Capture the screenshot of the currently active window."""
@@ -41,13 +41,18 @@ def capture_active_window_screenshot():
 
 
 def send_to_chatgpt(image_path, user_prompt):
-    """Send the screenshot and text prompt to ChatGPT API and return the response."""
+    """Send the screenshot and text prompt to OpenRouter API and return the response."""
     try:
         with open(image_path, "rb") as f:
             image_bytes = f.read()
         image_b64 = base64.b64encode(image_bytes).decode("utf-8")
 
-        headers = {"Authorization": f"Bearer {API_KEY}"}
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",
+            "HTTP-Referer": "https://your-site-url.com",  # Optional for OpenRouter ranking
+            "X-Title": "HCI Screenshot App",               # Optional title
+        }
+
         data = {
             "model": MODEL,
             "messages": [
@@ -57,11 +62,11 @@ def send_to_chatgpt(image_path, user_prompt):
                         {"type": "text", "text": user_prompt},
                         {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_b64}"}}
                     ]
-                }P
+                }
             ]
         }
 
-        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=data)
+        response = requests.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=data)
         response.raise_for_status()
         return response.json()["choices"][0]["message"]["content"]
 
@@ -114,7 +119,7 @@ class ScreenshotApp:
     def process_screenshot_and_prompt(self):
         prompt_text = self.prompt_box.get("1.0", tk.END).strip()
         self.response_box.delete("1.0", tk.END)
-        self.response_box.insert(tk.END, "⏳ Taking screenshot and contacting ChatGPT...\n")
+        self.response_box.insert(tk.END, "⏳ Taking screenshot and contacting OpenRouter...\n")
 
         image_path = capture_active_window_screenshot()
         if not image_path:
