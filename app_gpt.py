@@ -12,9 +12,10 @@ import os
 from PIL import Image
 
 # ------------------- CONFIGURATION ------------------- #
-API_KEY = "YOUR_OPENAI_API_KEY"  # Replace with your key
-MODEL = "gpt-4o-mini"  # image-capable model
-DEFAULT_PROMPT = "Here is a screenshot of the current application. What should I do next?"
+API_KEY = os.getenv("OPENROUTER_API_KEY") 
+print(API_KEY)
+MODEL = "mistralai/mistral-small-3.2-24b-instruct:free"
+DEFAULT_PROMPT = "I want to open a new file in vscode , At each step I will provide a screen shot of the app and you sould tell me what to do at each stage step by step what to do "
 DEFAULT_SHORTCUT = "shift+p"
 # ------------------------------------------------------ #
 
